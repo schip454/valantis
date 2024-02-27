@@ -31,7 +31,7 @@ const Search = () => {
 
   return (
     <div className=" flex items-center w-full">
-      <div className="relative flex h-10 pl-5 border border-[#303030] w-full rounded-3xl group-focus-within:border-blue-500 ">
+      <div className="relative flex h-10 pl-5 border border-[#303030] w-full rounded-2xl group-focus-within:border-blue-500 ">
         <input
           type="text"
           className="bg-transparent outline-none text-black pr-8 pl-0 w-full   group-focus-within:pl-0  placeholder:text-zinc-600"
