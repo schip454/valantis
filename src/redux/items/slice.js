@@ -72,7 +72,6 @@ export const swapFilter = createAsyncThunk(
   'items/swapFilter',
   async (params, thunkAPI) => {
     try {
-      console.log(params, 'params')
       const { data } = await axios.post(import.meta.env.VITE_API_URL, {
         "action": "filter",
         "params": params

@@ -21,7 +21,6 @@ function App() {
   const handlePageClick = (event) => {
     const newOffset = (event.selected * 50) % items.length;
     dispatch(setItemOffset(newOffset));
-    console.log(newOffset, 'newOffset');
     if (!isFiltering) dispatch(getCurrentIds(newOffset));
 
     window.scrollTo(0, 0);
