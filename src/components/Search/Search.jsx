@@ -3,6 +3,7 @@ import { FC, useCallback, useEffect, useRef, useState } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import {
+  setItemOffset,
   setPageCount,
   setSearchValue,
   swapFilter,
@@ -40,6 +41,8 @@ const Search = () => {
     console.log(value);
     dispatch(setSearchValue(value));
     dispatch(swapFilter(params));
+    dispatch(setItemOffset(0));
+    console.log('swapFilter');
 
     if (currentIds.length > 0) {
       dispatch(setPageCount(Math.ceil(currentIds.length / 50)));

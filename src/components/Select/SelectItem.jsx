@@ -2,7 +2,7 @@ import { compact, sortBy, uniq } from 'lodash';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Select from 'react-select';
-import { getFields, swapFilter } from '../../redux/items/slice';
+import { getFields, setItemOffset, swapFilter } from '../../redux/items/slice';
 
 const SelectItem = () => {
   const dispatch = useDispatch();
@@ -36,6 +36,7 @@ const SelectItem = () => {
       brand: e.value,
     };
     dispatch(swapFilter(params));
+    dispatch(setItemOffset(0));
   };
 
   // console.log(sortedUniqueArrayWithoutNulls, 'sortedUniqueArrayWithoutNulls');

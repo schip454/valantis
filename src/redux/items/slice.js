@@ -116,7 +116,8 @@ const initialState = {
   currentItems: [],
   searchValue: '',
   pageCount: null,
-  brands: []
+  brands: [],
+  itemOffset: 0
 }
 
 export const itemsSlice = createSlice({
@@ -132,8 +133,15 @@ export const itemsSlice = createSlice({
     setPageCount: (state, { payload }) => {
       state.pageCount = payload;
     },
+    setItemOffset: (state, { payload }) => {
+      state.itemOffset = payload;
+    },
     clearFilters: (state) => {
+      // state.isFiltering = false;
       state.isFiltering = false;
+      state.currentIds = [];
+      state.searchValue = "";
+      state.pageCount = null;
     },
 
   },
@@ -188,6 +196,6 @@ export const itemsSlice = createSlice({
   }
 })
 
-export const { setCurrentItems, setSearchValue, setPageCount, clearFilters } = itemsSlice.actions
+export const { setCurrentItems, setSearchValue, setPageCount, clearFilters, setItemOffset } = itemsSlice.actions
 
 export default itemsSlice.reducer

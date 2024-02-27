@@ -25,6 +25,7 @@ export const useItemsData = (dispatch, itemOffset, allIds, currentIds, items, is
 
   useEffect(() => {
     const uniqueItems = uniqBy(items, 'id');
-    dispatch(setCurrentItems(uniqueItems));
+    const endOffset = itemOffset + 50;
+    dispatch(setCurrentItems(uniqueItems.slice(itemOffset, endOffset)));
   }, [dispatch, items]);
 };

@@ -15,7 +15,7 @@ const InputPrice = () => {
         value={value}
         placeholder="Введите стоимость..."
         onChange={handleChange}
-        className="border border-gray-300 h-[38px] rounded-md p-2"
+        className="border border-gray-300 h-[38px] rounded-[4px] p-2"
       />
     </div>
   );

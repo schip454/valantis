@@ -3,29 +3,56 @@ import { useState } from 'react';
 import Pagination from './components/Pagination/Pagination';
 import Search from './components/Search/Search';
 import Items from './components/Items/Items';
-import { clearFilters, getCurrentIds } from './redux/items/slice';
+import {
+  clearFilters,
+  getAllIds,
+  getCurrentIds,
+  getItems,
+  setCurrentItems,
+  setItemOffset,
+  setPageCount,
+} from './redux/items/slice';
 import SelectItem from './components/Select/SelectItem';
 import InputPrice from './components/Price/Price';
 
 function App() {
   const dispatch = useDispatch();
-  const { isFiltering, items, currentItems, pageCount } = useSelector(
-    (state) => state.items
-  );
-
-  const [itemOffset, setItemOffset] = useState(0);
+  const {
+    isFiltering,
+    items,
+    currentItems,
+    pageCount,
+    currentIds,
+    allIds,
+    itemOffset,
+  } = useSelector((state) => state.items);
 
   const handlePageClick = (event) => {
     const newOffset = (event.selected * 50) % items.length;
-    setItemOffset(newOffset);
-    dispatch(getCurrentIds(newOffset));
+    dispatch(setItemOffset(newOffset));
+    console.log(newOffset, 'newOffset');
+    // dispatch(getCurrentIds(newOffset));
     // window.scrollTo(0, 0);
   };
 
-  const handleFilterPageClick = (event) => {
-    console.log('handleFilterPageClick');
-    // window.scrollTo(0, 0);
-  };
+  // const handleFilterPageClick = (event) => {
+  //   console.log('handleFilterPageClick');
+  //   // window.scrollTo(0, 0);
+  // };
+
+  // const handleReset = () => {
+  //   dispatch(getCurrentIds(itemOffset));
+  //   dispatch(getAllIds());
+  //   const pageCount = Math.ceil(allIds.length / 50);
+  //   dispatch(setPageCount(pageCount));
+  //   if (currentIds.length > 0) {
+  //     dispatch(getItems(currentIds));
+  //   }
+  //   if (isFiltering) {
+  //     const filteredPageCount = Math.ceil(currentIds.length / 50);
+  //     dispatch(setPageCount(filteredPageCount));
+  //   }
+  // };
 
   console.log(isFiltering, 'isFiltering');
 
@@ -38,15 +65,16 @@ function App() {
           <InputPrice />
           <SelectItem />
         </div>
-        <button onClick={() => dispatch(clearFilters())}>Сбросить</button>
+        <button onClick={() => {}}>Сбросить</button>
       </div>
 
-      <Items itemOffset={itemOffset} />
-      {isFiltering ? (
+      <Items />
+      <Pagination handlePageClick={handlePageClick} />
+      {/* {isFiltering ? (
         <Pagination handlePageClick={handleFilterPageClick} />
       ) : (
         <Pagination handlePageClick={handlePageClick} />
-      )}
+      )} */}
     </div>
   );
 }

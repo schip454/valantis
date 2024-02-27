@@ -14,7 +14,7 @@ import CardItem from '../Card';
 import { useItemsData } from '../../hooks/useItemsData';
 
 // eslint-disable-next-line react/prop-types
-function Items({ itemOffset }) {
+function Items() {
   const dispatch = useDispatch();
   const {
     allIds,
@@ -24,12 +24,52 @@ function Items({ itemOffset }) {
     currentItems,
     pageCount,
     isFiltering,
+    itemOffset,
   } = useSelector((state) => state.items);
 
-  console.log(pageCount, 'pageCount');
-  useItemsData(dispatch, itemOffset, allIds, currentIds, items, isFiltering);
+  // console.log(pageCount, 'pageCount');
 
-  console.log(currentIds, 'currentIds');
+  // useItemsData(dispatch, itemOffset, allIds, currentIds, items, isFiltering);
+
+  useEffect(() => {
+    dispatch(getCurrentIds(itemOffset));
+  }, []);
+
+  useEffect(() => {
+    dispatch(getAllIds());
+    dispatch(setPageCount(Math.ceil(allIds.length / 50)));
+  }, [allIds.length, dispatch]);
+
+  useEffect(() => {
+    if (isFiltering) {
+      dispatch(setPageCount(Math.ceil(currentIds.length / 50)));
+    }
+  }, [currentIds.length, dispatch, isFiltering]);
+
+  useEffect(() => {
+    if (currentIds.length > 0) {
+      dispatch(getItems(currentIds));
+    }
+  }, [currentIds]);
+
+  useEffect(() => {
+    const uniqueItems = uniqBy(items, 'id');
+    const endOffset = itemOffset + 50;
+    console.log(uniqueItems, 'uniqueItems');
+    console.log(itemOffset, 'itemOffset');
+    console.log(endOffset, 'endOffset');
+    console.log(
+      uniqueItems.slice(itemOffset, endOffset),
+      'uniqueItems.slice(itemOffset, endOffset)'
+    );
+    dispatch(setCurrentItems(uniqueItems.slice(itemOffset, endOffset)));
+    // dispatch(setCurrentItems(uniqBy(items, 'id')));
+    // dispatch(setPageCount(Math.ceil(currentItems.length / 50)));
+  }, [dispatch, itemOffset, items]);
+
+  // console.log(items, 'items');
+  // console.log(currentItems, 'currentItems');
+  // console.log(currentIds, 'currentIds');
 
   return (
     <div className="grid grid-cols-4 gap-3 items-start justify-start bg-pink-200">
