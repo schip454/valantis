@@ -117,7 +117,8 @@ const initialState = {
   searchValue: '',
   pageCount: null,
   brands: [],
-  itemOffset: 0
+  itemOffset: 0,
+
 }
 
 export const itemsSlice = createSlice({
@@ -137,11 +138,11 @@ export const itemsSlice = createSlice({
       state.itemOffset = payload;
     },
     clearFilters: (state) => {
-      // state.isFiltering = false;
       state.isFiltering = false;
-      state.currentIds = [];
-      state.searchValue = "";
-      state.pageCount = null;
+      // state.isFiltering = false;
+      // state.currentIds = [];
+      // state.searchValue = "";
+      // state.pageCount = null;
     },
 
   },

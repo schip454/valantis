@@ -11,7 +11,7 @@ import {
   setPageCount,
 } from '../../redux/items/slice';
 import CardItem from '../Card';
-import { useItemsData } from '../../hooks/useItemsData';
+// import { useItemsData } from '../../hooks/useItemsData';
 
 // eslint-disable-next-line react/prop-types
 function Items() {
@@ -27,8 +27,6 @@ function Items() {
     itemOffset,
   } = useSelector((state) => state.items);
 
-  // console.log(pageCount, 'pageCount');
-
   // useItemsData(dispatch, itemOffset, allIds, currentIds, items, isFiltering);
 
   useEffect(() => {
@@ -38,7 +36,7 @@ function Items() {
   useEffect(() => {
     dispatch(getAllIds());
     dispatch(setPageCount(Math.ceil(allIds.length / 50)));
-  }, [allIds.length, dispatch]);
+  }, []);
 
   useEffect(() => {
     if (isFiltering) {
@@ -55,16 +53,11 @@ function Items() {
   useEffect(() => {
     const uniqueItems = uniqBy(items, 'id');
     const endOffset = itemOffset + 50;
-    console.log(uniqueItems, 'uniqueItems');
-    console.log(itemOffset, 'itemOffset');
-    console.log(endOffset, 'endOffset');
-    console.log(
-      uniqueItems.slice(itemOffset, endOffset),
-      'uniqueItems.slice(itemOffset, endOffset)'
-    );
-    dispatch(setCurrentItems(uniqueItems.slice(itemOffset, endOffset)));
-    // dispatch(setCurrentItems(uniqBy(items, 'id')));
-    // dispatch(setPageCount(Math.ceil(currentItems.length / 50)));
+    if (isFiltering) {
+      dispatch(setCurrentItems(uniqueItems.slice(itemOffset, endOffset)));
+    } else {
+      dispatch(setCurrentItems(uniqueItems));
+    }
   }, [dispatch, itemOffset, items]);
 
   // console.log(items, 'items');

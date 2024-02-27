@@ -7,6 +7,7 @@ import {
   clearFilters,
   getAllIds,
   getCurrentIds,
+  // getCurrentIds,
   getItems,
   setCurrentItems,
   setItemOffset,
@@ -31,28 +32,16 @@ function App() {
     const newOffset = (event.selected * 50) % items.length;
     dispatch(setItemOffset(newOffset));
     console.log(newOffset, 'newOffset');
-    // dispatch(getCurrentIds(newOffset));
-    // window.scrollTo(0, 0);
+    if (!isFiltering) dispatch(getCurrentIds(newOffset));
+
+    window.scrollTo(0, 0);
   };
 
-  // const handleFilterPageClick = (event) => {
-  //   console.log('handleFilterPageClick');
-  //   // window.scrollTo(0, 0);
-  // };
-
-  // const handleReset = () => {
-  //   dispatch(getCurrentIds(itemOffset));
-  //   dispatch(getAllIds());
-  //   const pageCount = Math.ceil(allIds.length / 50);
-  //   dispatch(setPageCount(pageCount));
-  //   if (currentIds.length > 0) {
-  //     dispatch(getItems(currentIds));
-  //   }
-  //   if (isFiltering) {
-  //     const filteredPageCount = Math.ceil(currentIds.length / 50);
-  //     dispatch(setPageCount(filteredPageCount));
-  //   }
-  // };
+  const handleReset = () => {
+    dispatch(clearFilters());
+    dispatch(setPageCount(Math.ceil(allIds.length / 50)));
+    dispatch(getCurrentIds(0));
+  };
 
   console.log(isFiltering, 'isFiltering');
 
@@ -65,7 +54,11 @@ function App() {
           <InputPrice />
           <SelectItem />
         </div>
-        <button onClick={() => {}}>Сбросить</button>
+        <button
+          className="text-white hover:bg-gray-700 transition-colors"
+          onClick={handleReset}>
+          Сбросить фильтры
+        </button>
       </div>
 
       <Items />
