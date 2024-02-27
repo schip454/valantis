@@ -3,8 +3,6 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { fetchHeader } from '../../utils/common';
 
-
-
 export const getAllIds = createAsyncThunk(
   'items/getAllIds',
   async (_, thunkAPI) => {
@@ -25,18 +23,11 @@ export const getCurrentIds = createAsyncThunk(
   'items/getCurrentIds',
   async (offset, thunkAPI) => {
     try {
-      console.log(offset, 'offset')
       const { data } = await axios.post(import.meta.env.VITE_API_URL, {
-
         "action": "get_ids",
         "params": { "offset": offset, "limit": 50 }
-
       }, fetchHeader)
-
-      // console.log(data, 'data getCurrentIds')
-
       return data.result
-
     } catch (error) {
       console.log(error)
       return thunkAPI.rejectWithValue(error);
@@ -49,15 +40,10 @@ export const getItems = createAsyncThunk(
   async (ids, thunkAPI) => {
     try {
       const { data } = await axios.post(import.meta.env.VITE_API_URL, {
-
         "action": "get_items",
         "params": { "ids": [...ids] }
-
       }, fetchHeader)
-
-      // console.log(data.result, 'data')
       return data.result
-
     } catch (error) {
       console.log(error)
       return thunkAPI.rejectWithValue(error);
@@ -74,10 +60,7 @@ export const getFields = createAsyncThunk(
         "params": { "field": "brand" }
       }
         , fetchHeader)
-
-      console.log(data, 'data getFields')
       return data.result
-
     } catch (error) {
       console.log(error)
       return thunkAPI.rejectWithValue(error);
@@ -95,10 +78,7 @@ export const swapFilter = createAsyncThunk(
         "params": params
       }
         , fetchHeader)
-
-      console.log(data, 'data swapFilter')
       return data.result
-
     } catch (error) {
       console.log(error)
       return thunkAPI.rejectWithValue(error);
@@ -114,11 +94,11 @@ const initialState = {
   currentIds: [],
   items: [],
   currentItems: [],
-  searchValue: '',
   pageCount: null,
   brands: [],
   itemOffset: 0,
-
+  searchValue: '',
+  priceValue: '',
 }
 
 export const itemsSlice = createSlice({
@@ -137,17 +117,15 @@ export const itemsSlice = createSlice({
     setItemOffset: (state, { payload }) => {
       state.itemOffset = payload;
     },
+    setPriceValue: (state, { payload }) => {
+      state.priceValue = payload;
+    },
     clearFilters: (state) => {
       state.isFiltering = false;
-      // state.isFiltering = false;
-      // state.currentIds = [];
-      // state.searchValue = "";
-      // state.pageCount = null;
     },
 
   },
   extraReducers: (builder) => {
-
     builder.addCase(getAllIds.fulfilled, (state, { payload }) => {
       state.allIds = payload;
     });
@@ -178,25 +156,16 @@ export const itemsSlice = createSlice({
       state.isFiltering = true;
     });
     builder.addCase(swapFilter.fulfilled, (state, { payload }) => {
-      // state.isFiltering = true;
       state.currentIds = payload;
     });
+
     builder.addCase(getFields.fulfilled, (state, { payload }) => {
-      // state.isLoading = false;
       state.brands = payload;
     });
-    // builder.addCase(swapFilter.rejected, (state) => {
-    //   state.isLoading = false;
-    // });
-
-
-    // builder.addCase(getFields.fulfilled, (state, { payload }) => {
-    //   state.numbers = payload;
-    // });
 
   }
 })
 
-export const { setCurrentItems, setSearchValue, setPageCount, clearFilters, setItemOffset } = itemsSlice.actions
+export const { setCurrentItems, setSearchValue, setPageCount, clearFilters, setItemOffset, setPriceValue } = itemsSlice.actions
 
 export default itemsSlice.reducer

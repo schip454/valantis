@@ -1,29 +1,24 @@
-import { useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   setItemOffset,
   setPageCount,
+  setPriceValue,
   swapFilter,
 } from '../../redux/items/slice';
-import { debounce } from 'lodash';
 
 const InputPrice = () => {
   const dispatch = useDispatch();
-  const { currentIds, pageCount } = useSelector((state) => state.items);
-  const [value, setValue] = useState('');
-
+  const { currentIds, priceValue } = useSelector((state) => state.items);
   const handleChange = (e) => {
-    setValue(e.target.value);
+    dispatch(setPriceValue(e.target.value));
   };
-  console.log(value);
+
   const handleSearch = () => {
     const params = {
-      price: Number(value),
+      price: Number(priceValue),
     };
-    console.log(value);
     dispatch(swapFilter(params));
     dispatch(setItemOffset(0));
-    console.log('swapFilter');
 
     if (currentIds.length > 0) {
       dispatch(setPageCount(Math.ceil(currentIds.length / 50)));
@@ -35,12 +30,12 @@ const InputPrice = () => {
       <input
         id="price"
         type="number"
-        value={value}
+        value={priceValue}
         placeholder="Введите стоимость..."
         onChange={handleChange}
         className="border border-gray-300 h-[38px] rounded-[4px] p-2 w-full"
       />
-      {value && (
+      {priceValue && (
         <button
           className=" bg-transparent w-8 h-8 p-0  outline-none border-none flex items-center justify-center hover:bg-gray-300/80 transition-colors"
           onClick={handleSearch}>

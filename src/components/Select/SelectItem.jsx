@@ -1,5 +1,5 @@
 import { compact, sortBy, uniq } from 'lodash';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Select from 'react-select';
 import { getFields, setItemOffset, swapFilter } from '../../redux/items/slice';
@@ -8,17 +8,10 @@ const SelectItem = () => {
   const dispatch = useDispatch();
   const { brands } = useSelector((state) => state.items);
 
-  const [defaultValue, setDefaultValue] = useState(null);
-
   useEffect(() => {
     dispatch(getFields());
   }, []);
-  // const filteredArray = compact(brands);
-  // const uniqueArray = uniq(brands);
-  // const sortedArray = sortBy(brands);
-  // console.log(filteredArray, 'filteredArray');
-  // console.log(uniqueArray, 'uniqueArray');
-  // console.log(sortedArray, 'sortedArray');
+
   const sortedUniqueArrayWithoutNulls = sortBy(uniq(compact(brands)), [
     'field1',
     'field2',
@@ -39,11 +32,8 @@ const SelectItem = () => {
     dispatch(setItemOffset(0));
   };
 
-  // console.log(sortedUniqueArrayWithoutNulls, 'sortedUniqueArrayWithoutNulls');
-
   return (
     <Select
-      defaultValue={defaultValue}
       placeholder="Бренды..."
       onChange={(e) => handleSearch(e)}
       options={newOptions}

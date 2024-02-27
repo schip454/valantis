@@ -22,12 +22,9 @@ function Items() {
     isLoading,
     items,
     currentItems,
-    pageCount,
     isFiltering,
     itemOffset,
   } = useSelector((state) => state.items);
-
-  // useItemsData(dispatch, itemOffset, allIds, currentIds, items, isFiltering);
 
   useEffect(() => {
     dispatch(getCurrentIds(itemOffset));
@@ -36,7 +33,7 @@ function Items() {
   useEffect(() => {
     dispatch(getAllIds());
     dispatch(setPageCount(Math.ceil(allIds.length / 50)));
-  }, []);
+  }, [allIds.length]);
 
   useEffect(() => {
     if (isFiltering) {
@@ -60,12 +57,8 @@ function Items() {
     }
   }, [dispatch, itemOffset, items]);
 
-  // console.log(items, 'items');
-  // console.log(currentItems, 'currentItems');
-  // console.log(currentIds, 'currentIds');
-
   return (
-    <div className="grid grid-cols-4 gap-3 items-start justify-start bg-pink-200">
+    <div className="grid grid-cols-4 gap-3 items-start justify-start">
       {!isLoading ? (
         currentItems?.map((item, i) => (
           <CardItem key={item.id} i={i} item={item} />
