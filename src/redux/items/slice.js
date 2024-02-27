@@ -71,7 +71,7 @@ export const getFields = createAsyncThunk(
     try {
       const { data } = await axios.post(import.meta.env.VITE_API_URL, {
         "action": "get_fields",
-        "params": { "field": "product", "offset": 3, "limit": 5 }
+        "params": { "field": "brand" }
       }
         , fetchHeader)
 
@@ -87,13 +87,12 @@ export const getFields = createAsyncThunk(
 
 export const swapFilter = createAsyncThunk(
   'items/swapFilter',
-  async (searchValue, thunkAPI) => {
+  async (params, thunkAPI) => {
     try {
+      console.log(params, 'params')
       const { data } = await axios.post(import.meta.env.VITE_API_URL, {
         "action": "filter",
-        "params": {
-          "product": searchValue
-        }
+        "params": params
       }
         , fetchHeader)
 
@@ -110,12 +109,14 @@ export const swapFilter = createAsyncThunk(
 
 const initialState = {
   isLoading: false,
+  isFiltering: false,
   allIds: [],
   currentIds: [],
   items: [],
   currentItems: [],
   searchValue: '',
-  pageCount: null
+  pageCount: null,
+  brands: []
 }
 
 export const itemsSlice = createSlice({
@@ -130,6 +131,9 @@ export const itemsSlice = createSlice({
     },
     setPageCount: (state, { payload }) => {
       state.pageCount = payload;
+    },
+    clearFilters: (state) => {
+      state.isFiltering = false;
     },
 
   },
@@ -161,12 +165,16 @@ export const itemsSlice = createSlice({
       state.isLoading = false;
     });
 
-    // builder.addCase(swapFilter.pending, (state) => {
-    //   state.isLoading = true;
-    // });
+    builder.addCase(swapFilter.pending, (state) => {
+      state.isFiltering = true;
+    });
     builder.addCase(swapFilter.fulfilled, (state, { payload }) => {
-      // state.isLoading = false;
+      // state.isFiltering = true;
       state.currentIds = payload;
+    });
+    builder.addCase(getFields.fulfilled, (state, { payload }) => {
+      // state.isLoading = false;
+      state.brands = payload;
     });
     // builder.addCase(swapFilter.rejected, (state) => {
     //   state.isLoading = false;
@@ -180,6 +188,6 @@ export const itemsSlice = createSlice({
   }
 })
 
-export const { setCurrentItems, setSearchValue, setPageCount } = itemsSlice.actions
+export const { setCurrentItems, setSearchValue, setPageCount, clearFilters } = itemsSlice.actions
 
 export default itemsSlice.reducer

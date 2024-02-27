@@ -1,7 +1,9 @@
 /* eslint-disable react/prop-types */
 import ReactPaginate from 'react-paginate';
+import { useSelector } from 'react-redux';
 
-const Pagination = ({ handlePageClick, pageCount }) => {
+const Pagination = ({ handlePageClick }) => {
+  const { pageCount } = useSelector((state) => state.items);
   return (
     <div className="pb-4">
       <ReactPaginate

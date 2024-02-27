@@ -20,28 +20,46 @@ const Search = () => {
     inputRef.current?.focus();
   };
 
-  const updateSearchValue = useCallback(
-    debounce((str) => {
-      dispatch(setSearchValue(str));
-      dispatch(swapFilter(str));
-    }, 500),
-    []
-  );
+  // const updateSearchValue = useCallback(
+  //   debounce((str) => {
+  // dispatch(setSearchValue(str));
+  // dispatch(swapFilter(str));
+  //   }, 500),
+  //   []
+  // );
 
   const onChangeInput = (e) => {
     setValue(e.target.value);
-    updateSearchValue(e.target.value);
-    if (currentIds.length > 0)
+    // updateSearchValue(e.target.value);
+  };
+
+  const handleSearch = () => {
+    const params = {
+      product: value,
+    };
+    console.log(value);
+    dispatch(setSearchValue(value));
+    dispatch(swapFilter(params));
+
+    if (currentIds.length > 0) {
       dispatch(setPageCount(Math.ceil(currentIds.length / 50)));
+    } else {
+      alert('Ничего не найдено');
+    }
+
+    // if (!currentIds.length > 0) {
+    //   console.log('asduasidjasidaisdasi');
+    //   alert('Ничего не найдено');
+    // }
   };
 
   return (
-    <div className="group flex items-center ">
-      <div className="relative flex h-8 md:h-10 md:pl-5 border border-[#303030] rounded-3xl group-focus-within:border-blue-500 ">
+    <div className=" flex items-center w-full">
+      <div className="relative flex h-10 pl-5 border border-[#303030] w-full rounded-3xl group-focus-within:border-blue-500 ">
         <input
           ref={inputRef}
           type="text"
-          className="bg-transparent outline-none text-black pr-8 pl-5 md:pl-0 w-80  md:group-focus-within:pl-0  placeholder:text-zinc-600"
+          className="bg-transparent outline-none text-black pr-8 pl-0 w-full   group-focus-within:pl-0  placeholder:text-zinc-600"
           onChange={onChangeInput}
           value={value}
           onFocus={() => {}}
@@ -57,6 +75,11 @@ const Search = () => {
           </svg>
         )}
       </div>
+      <button
+        className="text-white rounded-3xl flex items-center justify-center w-[120px] h-[40px] ml-2 hover:bg-slate-700 transition-colors"
+        onClick={handleSearch}>
+        Поиск
+      </button>
     </div>
   );
 };
